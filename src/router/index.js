@@ -6,55 +6,55 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/login',
-    name: 'Login',
+    name: 'login',
     meta: { layout: 'empty' },
     component: () => import('../views/Login')
   },
   {
     path: '/register',
-    name: 'Register',
+    name: 'register',
     meta: { layout: 'empty' },
     component: () => import('../views/Register')
   },
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     meta: { layout: 'main' },
     component: () => import('../views/Home')
   },
   {
     path: '/categories',
-    name: 'Categories',
+    name: 'categories',
     meta: { layout: 'main' },
     component: () => import('../views/Categories')
   },
   {
     path: '/detail',
-    name: 'Detail',
+    name: 'detail',
     meta: { layout: 'main' },
     component: () => import('../views/Detail')
   },
   {
     path: '/history',
-    name: 'History',
+    name: 'history',
     meta: { layout: 'main' },
     component: () => import('../views/History')
   },
   {
     path: '/planning',
-    name: 'Planning',
+    name: 'planning',
     meta: { layout: 'main' },
     component: () => import('../views/Planning')
   },
   {
     path: '/profile',
-    name: 'Profile',
+    name: 'profile',
     meta: { layout: 'main' },
     component: () => import('../views/Profile')
   },
   {
     path: '/record',
-    name: 'Record',
+    name: 'record',
     meta: { layout: 'main' },
     component: () => import('../views/Record')
   }
