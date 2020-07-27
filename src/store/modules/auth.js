@@ -4,8 +4,9 @@ export default {
   state: { },
   mutations: { },
   actions: {
-    async logout ({ dispatch }) {
+    async logout ({ commit }) {
       await firebase.auth().signOut()
+      commit('clearInfo')
     },
     async login ({ dispatch, commit }, { email, password }) {
       try {

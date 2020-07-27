@@ -1,20 +1,22 @@
 <template>
-  <div class="app-main-layout">
+  <div>
+    <Loader v-if="loading" />
 
-    <Navbar @click="isOpen = !isOpen" />
+    <div v-else class="app-main-layout">
+      <Navbar @click="isOpen = !isOpen" />
+      <Sidenav v-model="isOpen" />
 
-    <Sidenav v-model="isOpen" />
+      <main class="app-content" :class="{full: !isOpen}">
+        <div class="app-page">
+          <router-view/>
+        </div>
+      </main>
 
-    <main class="app-content" :class="{full: !isOpen}">
-      <div class="app-page">
-        <router-view/>
+      <div class="fixed-action-btn">
+        <router-link to="/record" class="btn-floating btn-large blue">
+          <i class="large material-icons">add</i>
+        </router-link>
       </div>
-    </main>
-
-    <div class="fixed-action-btn">
-      <router-link to="/record" class="btn-floating btn-large blue">
-        <i class="large material-icons">add</i>
-      </router-link>
     </div>
   </div>
 </template>
@@ -26,15 +28,18 @@ import Sidenav from '@/components/app/Sidenav'
 export default {
   name: 'main-layout',
   data: () => ({
-    isOpen: true
+    isOpen: true,
+    loading: true
   }),
+  async mounted () {
+    if (!Object.keys(this.$store.getters.info).length) {
+      await this.$store.dispatch('fetchInfo')
+    }
+
+    this.loading = false
+  },
   components: {
-    Navbar,
-    Sidenav
+    Navbar, Sidenav
   }
 }
 </script>
-
-<style scoped>
-
-</style>
