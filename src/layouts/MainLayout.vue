@@ -24,6 +24,7 @@
 <script>
 import Navbar from '@/components/app/Navbar'
 import Sidenav from '@/components/app/Sidenav'
+import messages from '@/utils/messages'
 
 export default {
   name: 'main-layout',
@@ -37,6 +38,16 @@ export default {
     }
 
     this.loading = false
+  },
+  computed: {
+    error () {
+      return this.$store.getters.error
+    }
+  },
+  watch: {
+    error (fbError) {
+      this.$error(messages[fbError.code] || 'что-то пошло не так')
+    }
   },
   components: {
     Navbar, Sidenav

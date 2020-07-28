@@ -8,7 +8,9 @@
       <canvas></canvas>
     </div>
 
-    <section>
+    <loader v-if="loading" />
+
+    <section v-else>
       <table>
         <thead>
         <tr>
@@ -22,13 +24,13 @@
         </thead>
 
         <tbody>
-        <tr>
-          <td>1</td>
-          <td>1212</td>
-          <td>12.12.32</td>
-          <td>name</td>
+        <tr v-for="(record, index) in records" :key="record.id">
+          <td>{{index + 1}}</td>
+          <td>{{record.amount | currency}}</td>
+          <td>{{new Date(record.date) | date('date')}}</td>
+          <td>{{record.categoryName}}</td>
           <td>
-            <span class="white-text badge red">Расход</span>
+            <span class="white-text badge" :class="{red: record.type === 'outcome', blue: record.type === 'income'}">Расход</span>
           </td>
           <td>
             <button class="btn-small btn">
@@ -44,6 +46,25 @@
 
 <script>
 export default {
+  name: 'history',
+  data: () => ({
+    loading: true,
+    records: []
+  }),
+  async mounted () {
+    const records = await this.$store.dispatch('fetchRecords')
+    const categories = await this.$store.dispatch('fetchCategories')
+
+    this.records = records.map(record => {
+      const categoryName = categories.find(cat => cat.id === record.categoryId).title
+
+      return {
+        ...record,
+        categoryName
+      }
+    })
+    this.loading = false
+  }
 }
 </script>
 
