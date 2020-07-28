@@ -10,41 +10,17 @@
 
     <loader v-if="loading" />
 
-    <section v-else>
-      <table>
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Сумма</th>
-          <th>Дата</th>
-          <th>Категория</th>
-          <th>Тип</th>
-          <th>Открыть</th>
-        </tr>
-        </thead>
+    <p v-else-if="!records.length" class="center">Записей пока нет. <RouterLink to="/record">Добавить запись</RouterLink></p>
 
-        <tbody>
-        <tr v-for="(record, index) in records" :key="record.id">
-          <td>{{index + 1}}</td>
-          <td>{{record.amount | currency}}</td>
-          <td>{{new Date(record.date) | date('date')}}</td>
-          <td>{{record.categoryName}}</td>
-          <td>
-            <span class="white-text badge" :class="{red: record.type === 'outcome', blue: record.type === 'income'}">Расход</span>
-          </td>
-          <td>
-            <button class="btn-small btn">
-              <i class="material-icons">open_in_new</i>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+    <section v-else>
+      <HistoryTable :records="records" />
     </section>
   </div>
 </template>
 
 <script>
+import HistoryTable from '@/components/HistoryTable'
+
 export default {
   name: 'history',
   data: () => ({
@@ -56,14 +32,18 @@ export default {
     const categories = await this.$store.dispatch('fetchCategories')
 
     this.records = records.map(record => {
-      const categoryName = categories.find(cat => cat.id === record.categoryId).title
-
       return {
         ...record,
-        categoryName
+        categoryName: categories.find(cat => cat.id === record.categoryId).title,
+        typeClass: record.type === 'income' ? 'blue' : 'red',
+        typeText: record.type === 'income' ? 'Доход' : 'Расход'
       }
     })
+
     this.loading = false
+  },
+  components: {
+    HistoryTable
   }
 }
 </script>
