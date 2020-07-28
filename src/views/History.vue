@@ -33,6 +33,7 @@
 <script>
 import HistoryTable from '@/components/HistoryTable'
 import paginationMixin from '@/mixins/pagination.mixin'
+import currencyFilter from '@/filters/currency.filter'
 
 export default {
   name: 'history',
@@ -50,7 +51,8 @@ export default {
         ...record,
         categoryName: categories.find(cat => cat.id === record.categoryId).title,
         typeClass: record.type === 'income' ? 'blue' : 'red',
-        typeText: record.type === 'income' ? 'Доход' : 'Расход'
+        typeText: record.type === 'income' ? 'Доход' : 'Расход',
+        tooltipText: currencyFilter(record.amount)
       }
     }))
 
